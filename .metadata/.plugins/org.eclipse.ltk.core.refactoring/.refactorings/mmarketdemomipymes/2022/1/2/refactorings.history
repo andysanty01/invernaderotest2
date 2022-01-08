@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;tareas.xhtml&apos; to &apos;administrador&apos;&#x0D;&#x0A;- Original project: &apos;mmarketdemomipymes&apos;&#x0D;&#x0A;- Destination element: &apos;administrador&apos;&#x0D;&#x0A;- Original element: &apos;tareas.xhtml&apos;" description="Copy file" element1="mmarketdemoWeb/WebContent/proyectos/lider/tareas.xhtml" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1641266590346" target="/invernaderoWeb/src/main/webapp/proveedores/administrador" units="0" version="1.0"/>
+</session>

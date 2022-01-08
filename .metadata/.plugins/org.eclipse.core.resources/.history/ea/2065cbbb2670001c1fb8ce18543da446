@@ -1,0 +1,74 @@
+package minimarketdemo.model.alquiler.managers;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.ws.rs.client.Client;
+
+import minimarketdemo.model.core.entities.AlquilerCab;
+import minimarketdemo.model.core.entities.AlquilerDet;
+import minimarketdemo.model.core.entities.Clienteal;
+import minimarketdemo.model.core.entities.PryProyecto;
+import minimarketdemo.model.core.entities.PryTarea;
+import minimarketdemo.model.core.entities.SalCarnet;
+import minimarketdemo.model.core.entities.SegUsuario;
+import minimarketdemo.model.core.managers.ManagerDAO;
+import minimarketdemo.model.core.utils.ModelUtil;
+
+/**
+ * Session Bean implementation class ManagerAlquiler
+ */
+@Stateless
+@LocalBean
+public class ManagerAlquiler {
+
+
+	@EJB
+	private ManagerDAO mDAO;
+	@PersistenceContext
+	private EntityManager eManager;
+	
+    public ManagerAlquiler() {
+    }
+    
+ // Inicializar proyectos
+ 	public AlquilerCab inicializarAlquiler() {
+ 		AlquilerCab alquilercab = new AlquilerCab();
+ 		alquilercab.setFecha(new Date());
+ 		alquilercab.setDescripcion("");
+ 		alquilercab.setValorTotal(new BigDecimal(0));
+ 		alquilercab.setEstado(false);
+ 		return alquilercab;
+ 	}
+
+    //lista de alquileres cabecera
+    public List<AlquilerCab> findAllAlquieresCab() {
+		return mDAO.findAll(AlquilerCab.class);
+	}
+    
+  //lista de alquileres detalle
+    public List<AlquilerDet> findAllAlquieresDet(int id_alquiler) {
+		return mDAO.findWhere(AlquilerDet.class, "o.alquiler_cab.id_alquiler_cab=" + id_alquiler, "o.id_alquiler_cab");
+	}
+    
+    //Lista de clientes
+    public List<Clienteal> findAllClientes(){
+    	return mDAO.findAll(Clienteal.class);
+    }
+    
+    
+ // Insercion de alquileres
+ 	public void insertarAlquilerCab(AlquilerCab nuevoAlquilerCab, String cedula) throws Exception {
+ 		Clienteal cliente = (Clienteal) mDAO.findById(Clienteal.class, cedula);// buscamos el usuario
+		nuevoAlquilerCab.setClienteal(cliente);// asignamos al usuario a la tarea
+		mDAO.insertar(nuevoAlquilerCab);
+    }
+    
+    
+}

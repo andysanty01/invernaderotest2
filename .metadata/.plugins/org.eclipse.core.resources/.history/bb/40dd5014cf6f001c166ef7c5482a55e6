@@ -1,0 +1,129 @@
+package minimarketdemo.controller.alquiler;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import minimarketdemo.controller.JSFUtil;
+import minimarketdemo.model.alquiler.managers.ManagerAlquiler;
+import minimarketdemo.model.core.entities.AlquilerCab;
+import minimarketdemo.model.core.entities.AlquilerDet;
+import minimarketdemo.model.core.entities.Clienteal;
+import minimarketdemo.model.core.entities.PryProyecto;
+import minimarketdemo.model.proyectos.managers.ManagerProyectos;
+
+@Named
+@SessionScoped
+public class BeanAlAtencion implements Serializable {
+
+	@EJB
+	private ManagerAlquiler mAlquiler;
+
+	// Variables tipo PryProyecto
+	private AlquilerCab nuevoAlquilerCab;
+	private AlquilerDet nuevoAlquilerDet;
+	
+	// Variables tipo List
+	private List<AlquilerCab> listaAlquileresCab;
+	private List<AlquilerDet> listaAlquileresDet;
+	private List<Clienteal> listaClientes;
+	
+	
+	// Cliente seleccionado
+	private String clienteSeleccionado;
+	private AlquilerDet alquilerSeleccionado;
+
+	public BeanAlAtencion() {
+	}
+
+	@PostConstruct
+	public void inicializar() {
+		listaAlquileresCab = mAlquiler.findAllAlquieresCab();
+		listaClientes = mAlquiler.findAllClientes();
+		nuevoAlquilerCab = mAlquiler.inicializarAlquiler();
+		
+		listaAlquileresDet = mAlquiler.findAllAlquieresDet(alquilerSeleccionado.getIdAlquilerDet());
+
+	}
+
+	// Agregar alquileres
+	public void actionListenerInsertarAlquilerCab() {
+		try {
+			mAlquiler.insertarAlquilerCab(nuevoAlquilerCab, clienteSeleccionado);
+			JSFUtil.crearMensajeINFO("alquiler creado");
+			listaAlquileresCab = mAlquiler.findAllAlquieresCab();
+			nuevoAlquilerCab = mAlquiler.inicializarAlquiler();
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	
+
+	// Accesores
+
+	
+	
+	public List<AlquilerCab> getListaAlquileresCab() {
+		return listaAlquileresCab;
+	}
+
+	public AlquilerDet getNuevoAlquilerDet() {
+		return nuevoAlquilerDet;
+	}
+
+	public void setNuevoAlquilerDet(AlquilerDet nuevoAlquilerDet) {
+		this.nuevoAlquilerDet = nuevoAlquilerDet;
+	}
+
+
+	public AlquilerDet getAlquilerSeleccionado() {
+		return alquilerSeleccionado;
+	}
+
+	public void setAlquilerSeleccionado(AlquilerDet alquilerSeleccionado) {
+		this.alquilerSeleccionado = alquilerSeleccionado;
+	}
+
+	public AlquilerCab getNuevoAlquilerCab() {
+		return nuevoAlquilerCab;
+	}
+
+	public void setNuevoAlquilerCab(AlquilerCab nuevoAlquilerCab) {
+		this.nuevoAlquilerCab = nuevoAlquilerCab;
+	}
+
+	public void setListaAlquileresCab(List<AlquilerCab> listaAlquileresCab) {
+		this.listaAlquileresCab = listaAlquileresCab;
+	}
+
+	public List<AlquilerDet> getListaAlquileresDet() {
+		return listaAlquileresDet;
+	}
+
+	public void setListaAlquileresDet(List<AlquilerDet> listaAlquileresDet) {
+		this.listaAlquileresDet = listaAlquileresDet;
+	}
+
+	public String getClienteSeleccionado() {
+		return clienteSeleccionado;
+	}
+
+	public void setClienteSeleccionado(String clienteSeleccionado) {
+		this.clienteSeleccionado = clienteSeleccionado;
+	}
+
+	public List<Clienteal> getListaClientes() {
+		return listaClientes;
+	}
+
+	public void setListaClientes(List<Clienteal> listaClientes) {
+		this.listaClientes = listaClientes;
+	}
+
+}

@@ -1,0 +1,82 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+
+/**
+ * The persistent class for the alquiler_det database table.
+ * 
+ */
+@Entity
+@Table(name="alquiler_det")
+@NamedQuery(name="AlquilerDet.findAll", query="SELECT a FROM AlquilerDet a")
+public class AlquilerDet implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_alquiler_det", unique=true, nullable=false)
+	private Integer idAlquilerDet;
+
+	@Column(name="numero_dias", nullable=false)
+	private Integer numeroDias;
+
+	@Column(nullable=false, precision=7, scale=2)
+	private BigDecimal subtotal;
+
+	//bi-directional many-to-one association to AlquilerCab
+	@ManyToOne
+	@JoinColumn(name="id_alquiler_cab", nullable=false)
+	private AlquilerCab alquilerCab;
+
+	//bi-directional many-to-one association to Productoal
+	@ManyToOne
+	@JoinColumn(name="id_productoal", nullable=false)
+	private Productoal productoal;
+
+	public AlquilerDet() {
+	}
+
+	public Integer getIdAlquilerDet() {
+		return this.idAlquilerDet;
+	}
+
+	public void setIdAlquilerDet(Integer idAlquilerDet) {
+		this.idAlquilerDet = idAlquilerDet;
+	}
+
+	public Integer getNumeroDias() {
+		return this.numeroDias;
+	}
+
+	public void setNumeroDias(Integer numeroDias) {
+		this.numeroDias = numeroDias;
+	}
+
+	public BigDecimal getSubtotal() {
+		return this.subtotal;
+	}
+
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	public AlquilerCab getAlquilerCab() {
+		return this.alquilerCab;
+	}
+
+	public void setAlquilerCab(AlquilerCab alquilerCab) {
+		this.alquilerCab = alquilerCab;
+	}
+
+	public Productoal getProductoal() {
+		return this.productoal;
+	}
+
+	public void setProductoal(Productoal productoal) {
+		this.productoal = productoal;
+	}
+
+}

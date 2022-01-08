@@ -1,0 +1,71 @@
+package minimarketdemo.controller.alquiler;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+import minimarketdemo.controller.JSFUtil;
+import minimarketdemo.model.alquiler.managers.ManagerAlquiler;
+import minimarketdemo.model.core.entities.AlquilerCab;
+import minimarketdemo.model.core.entities.AlquilerDet;
+
+@Named
+@SessionScoped
+public class BeanAlJefe implements Serializable {
+
+	
+	@EJB
+	private ManagerAlquiler mAlquiler;
+
+	// Variables tipo PryProyecto
+	private AlquilerCab nuevoAlquilerCab;
+	// Variables tipo List
+	private List<AlquilerCab> listaAlquileresCab;
+	private List<AlquilerDet> listaAlquileresDet;
+	public BeanAlJefe() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	@PostConstruct
+	public void inicializar() {
+		listaAlquileresCab = mAlquiler.findAllAlquieresCab();
+		nuevoAlquilerCab = mAlquiler.inicializarAlquiler();
+
+	}
+	
+	
+
+	// Accesores
+	
+	
+
+	public List<AlquilerCab> getListaAlquileresCab() {
+		return listaAlquileresCab;
+	}
+
+	public AlquilerCab getNuevoAlquilerCab() {
+		return nuevoAlquilerCab;
+	}
+
+	public void setNuevoAlquilerCab(AlquilerCab nuevoAlquilerCab) {
+		this.nuevoAlquilerCab = nuevoAlquilerCab;
+	}
+
+	public void setListaAlquileresCab(List<AlquilerCab> listaAlquileresCab) {
+		this.listaAlquileresCab = listaAlquileresCab;
+	}
+
+	public List<AlquilerDet> getListaAlquileresDet() {
+		return listaAlquileresDet;
+	}
+
+	public void setListaAlquileresDet(List<AlquilerDet> listaAlquileresDet) {
+		this.listaAlquileresDet = listaAlquileresDet;
+	}
+
+}

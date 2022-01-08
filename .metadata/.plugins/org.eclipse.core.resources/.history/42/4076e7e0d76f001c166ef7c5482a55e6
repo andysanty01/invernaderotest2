@@ -1,0 +1,94 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
+
+
+/**
+ * The persistent class for the producto database table.
+ * 
+ */
+@Entity
+@Table(name="producto")
+@NamedQuery(name="Producto.findAll", query="SELECT p FROM Producto p")
+public class Producto implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="pro_id", unique=true, nullable=false)
+	private Integer proId;
+
+	@Column(name="pro_descripcion", nullable=false, length=50)
+	private String proDescripcion;
+
+	@Column(name="pro_nombre", nullable=false, length=50)
+	private String proNombre;
+
+	@Column(name="pro_precio", precision=7, scale=2)
+	private BigDecimal proPrecio;
+
+	//bi-directional many-to-one association to ProformaDetalle
+	@OneToMany(mappedBy="producto")
+	private List<ProformaDetalle> proformaDetalles;
+
+	public Producto() {
+	}
+
+	public Integer getProId() {
+		return this.proId;
+	}
+
+	public void setProId(Integer proId) {
+		this.proId = proId;
+	}
+
+	public String getProDescripcion() {
+		return this.proDescripcion;
+	}
+
+	public void setProDescripcion(String proDescripcion) {
+		this.proDescripcion = proDescripcion;
+	}
+
+	public String getProNombre() {
+		return this.proNombre;
+	}
+
+	public void setProNombre(String proNombre) {
+		this.proNombre = proNombre;
+	}
+
+	public BigDecimal getProPrecio() {
+		return this.proPrecio;
+	}
+
+	public void setProPrecio(BigDecimal proPrecio) {
+		this.proPrecio = proPrecio;
+	}
+
+	public List<ProformaDetalle> getProformaDetalles() {
+		return this.proformaDetalles;
+	}
+
+	public void setProformaDetalles(List<ProformaDetalle> proformaDetalles) {
+		this.proformaDetalles = proformaDetalles;
+	}
+
+	public ProformaDetalle addProformaDetalle(ProformaDetalle proformaDetalle) {
+		getProformaDetalles().add(proformaDetalle);
+		proformaDetalle.setProducto(this);
+
+		return proformaDetalle;
+	}
+
+	public ProformaDetalle removeProformaDetalle(ProformaDetalle proformaDetalle) {
+		getProformaDetalles().remove(proformaDetalle);
+		proformaDetalle.setProducto(null);
+
+		return proformaDetalle;
+	}
+
+}

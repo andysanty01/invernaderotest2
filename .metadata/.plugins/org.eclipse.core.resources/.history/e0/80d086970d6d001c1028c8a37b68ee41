@@ -1,0 +1,92 @@
+package invernadero.controller.proveedores;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import invernadero.controller.JSFUtil;
+import invernadero.controller.seguridades.BeanSegLogin;
+import invernadero.model.core.entities.ProvCiudad;
+import invernadero.model.core.entities.ProvProveedor;
+import invernadero.model.proveedores.managers.ManagerProveedores;
+
+@Named
+@SessionScoped
+public class BeanProvAdministrador implements Serializable {
+
+	@EJB
+	private ManagerProveedores mProveedores;
+	private List<ProvCiudad> listaCiudades;
+	private List<ProvProveedor> listaProveedores;
+
+	// Variables tipo PryProyecto
+	private ProvCiudad nuevaCiudad;
+	
+	@Inject
+	private BeanSegLogin beanSegLogin;
+
+	public BeanProvAdministrador() {
+	}
+
+	@PostConstruct
+	public void inicializar() {
+		listaCiudades = mProveedores.findAllCiudades();
+		listaProveedores = mProveedores.findAllProveedores();
+		
+		nuevaCiudad = mProveedores.inicializarCiudad();
+	}
+
+	//Inserccion de Ciudades
+	public void actionListenerInsertarCiudad() {
+		try {
+			mProveedores.insertarCiudad(nuevaCiudad);;
+			JSFUtil.crearMensajeINFO("Ciudad agregada con éxito");
+			listaCiudades = mProveedores.findAllCiudades();
+			nuevaCiudad = mProveedores.inicializarCiudad();
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	// ACCESORES
+	public List<ProvCiudad> getListaCiudades() {
+		return listaCiudades;
+	}
+
+	public void setListaCiudades(List<ProvCiudad> listaCiudades) {
+		this.listaCiudades = listaCiudades;
+	}
+
+	public BeanSegLogin getBeanSegLogin() {
+		return beanSegLogin;
+	}
+
+	public void setBeanSegLogin(BeanSegLogin beanSegLogin) {
+		this.beanSegLogin = beanSegLogin;
+	}
+
+	public List<ProvProveedor> getListaProveedores() {
+		return listaProveedores;
+	}
+
+	public void setListaProveedores(List<ProvProveedor> listaProveedores) {
+		this.listaProveedores = listaProveedores;
+	}
+
+	public ProvCiudad getNuevaCiudad() {
+		return nuevaCiudad;
+	}
+
+	public void setNuevaCiudad(ProvCiudad nuevaCiudad) {
+		this.nuevaCiudad = nuevaCiudad;
+	}
+	
+	
+
+}

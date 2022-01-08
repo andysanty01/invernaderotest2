@@ -1,0 +1,37 @@
+package invernadero.controller.proveedores;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import invernadero.controller.seguridades.BeanSegLogin;
+import invernadero.model.core.entities.ProvCiudad;
+import invernadero.model.proveedores.managers.ManagerProveedores;
+
+@Named
+@SessionScoped
+public class BeanProvAdministrador implements Serializable {
+
+	
+	@EJB
+	private ManagerProveedores mProveedores;
+	private List<ProvCiudad> listaCiudades;
+
+	@Inject
+	private BeanSegLogin beanSegLogin;
+	
+	
+	public BeanProvAdministrador() {
+	}
+	
+	
+	@PostConstruct
+	public void inicializar() {
+		listaCiudades = mProveedores.findAllCiudades();
+	}
+}

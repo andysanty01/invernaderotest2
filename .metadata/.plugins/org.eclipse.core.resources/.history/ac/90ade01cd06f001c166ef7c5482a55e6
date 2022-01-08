@@ -1,0 +1,12 @@
+package minimarketdemo.controller;
+
+import javax.enterprise.context.SessionScoped;
+
+@SessionScoped
+public class jss {
+
+	public jss() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

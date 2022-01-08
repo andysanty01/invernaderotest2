@@ -1,0 +1,137 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+
+/**
+ * The persistent class for the proforma_cab database table.
+ * 
+ */
+@Entity
+@Table(name="proforma_cab")
+@NamedQuery(name="ProformaCab.findAll", query="SELECT p FROM ProformaCab p")
+public class ProformaCab implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="profor_cab_id", unique=true, nullable=false)
+	private Integer proforCabId;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="profor_cab_fecha")
+	private Date proforCabFecha;
+
+	@Column(name="profor_cab_total", precision=7, scale=2)
+	private BigDecimal proforCabTotal;
+
+	//bi-directional many-to-one association to Pedido
+	@OneToMany(mappedBy="proformaCab")
+	private List<Pedido> pedidos;
+
+	//bi-directional many-to-one association to Cliente
+	@ManyToOne
+	@JoinColumn(name="cli_cedula")
+	private Cliente cliente;
+
+	//bi-directional many-to-one association to SegUsuario
+	@ManyToOne
+	@JoinColumn(name="id_seg_usuario", nullable=false)
+	private SegUsuario segUsuario;
+
+	//bi-directional many-to-one association to ProformaDetalle
+	@OneToMany(mappedBy="proformaCab")
+	private List<ProformaDetalle> proformaDetalles;
+
+	public ProformaCab() {
+	}
+
+	public Integer getProforCabId() {
+		return this.proforCabId;
+	}
+
+	public void setProforCabId(Integer proforCabId) {
+		this.proforCabId = proforCabId;
+	}
+
+	public Date getProforCabFecha() {
+		return this.proforCabFecha;
+	}
+
+	public void setProforCabFecha(Date proforCabFecha) {
+		this.proforCabFecha = proforCabFecha;
+	}
+
+	public BigDecimal getProforCabTotal() {
+		return this.proforCabTotal;
+	}
+
+	public void setProforCabTotal(BigDecimal proforCabTotal) {
+		this.proforCabTotal = proforCabTotal;
+	}
+
+	public List<Pedido> getPedidos() {
+		return this.pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public Pedido addPedido(Pedido pedido) {
+		getPedidos().add(pedido);
+		pedido.setProformaCab(this);
+
+		return pedido;
+	}
+
+	public Pedido removePedido(Pedido pedido) {
+		getPedidos().remove(pedido);
+		pedido.setProformaCab(null);
+
+		return pedido;
+	}
+
+	public Cliente getCliente() {
+		return this.cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public SegUsuario getSegUsuario() {
+		return this.segUsuario;
+	}
+
+	public void setSegUsuario(SegUsuario segUsuario) {
+		this.segUsuario = segUsuario;
+	}
+
+	public List<ProformaDetalle> getProformaDetalles() {
+		return this.proformaDetalles;
+	}
+
+	public void setProformaDetalles(List<ProformaDetalle> proformaDetalles) {
+		this.proformaDetalles = proformaDetalles;
+	}
+
+	public ProformaDetalle addProformaDetalle(ProformaDetalle proformaDetalle) {
+		getProformaDetalles().add(proformaDetalle);
+		proformaDetalle.setProformaCab(this);
+
+		return proformaDetalle;
+	}
+
+	public ProformaDetalle removeProformaDetalle(ProformaDetalle proformaDetalle) {
+		getProformaDetalles().remove(proformaDetalle);
+		proformaDetalle.setProformaCab(null);
+
+		return proformaDetalle;
+	}
+
+}

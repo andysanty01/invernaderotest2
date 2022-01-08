@@ -1,0 +1,103 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the cliente database table.
+ * 
+ */
+@Entity
+@Table(name="cliente")
+@NamedQuery(name="Cliente.findAll", query="SELECT c FROM Cliente c")
+public class Cliente implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name="cli_cedula", unique=true, nullable=false, length=13)
+	private String cliCedula;
+
+	@Column(name="cli_apellido", nullable=false, length=50)
+	private String cliApellido;
+
+	@Column(name="cli_direccion", length=100)
+	private String cliDireccion;
+
+	@Column(name="cli_nombre", nullable=false, length=50)
+	private String cliNombre;
+
+	@Column(name="cli_telefono", length=10)
+	private String cliTelefono;
+
+	//bi-directional many-to-one association to ProformaCab
+	@OneToMany(mappedBy="cliente")
+	private List<ProformaCab> proformaCabs;
+
+	public Cliente() {
+	}
+
+	public String getCliCedula() {
+		return this.cliCedula;
+	}
+
+	public void setCliCedula(String cliCedula) {
+		this.cliCedula = cliCedula;
+	}
+
+	public String getCliApellido() {
+		return this.cliApellido;
+	}
+
+	public void setCliApellido(String cliApellido) {
+		this.cliApellido = cliApellido;
+	}
+
+	public String getCliDireccion() {
+		return this.cliDireccion;
+	}
+
+	public void setCliDireccion(String cliDireccion) {
+		this.cliDireccion = cliDireccion;
+	}
+
+	public String getCliNombre() {
+		return this.cliNombre;
+	}
+
+	public void setCliNombre(String cliNombre) {
+		this.cliNombre = cliNombre;
+	}
+
+	public String getCliTelefono() {
+		return this.cliTelefono;
+	}
+
+	public void setCliTelefono(String cliTelefono) {
+		this.cliTelefono = cliTelefono;
+	}
+
+	public List<ProformaCab> getProformaCabs() {
+		return this.proformaCabs;
+	}
+
+	public void setProformaCabs(List<ProformaCab> proformaCabs) {
+		this.proformaCabs = proformaCabs;
+	}
+
+	public ProformaCab addProformaCab(ProformaCab proformaCab) {
+		getProformaCabs().add(proformaCab);
+		proformaCab.setCliente(this);
+
+		return proformaCab;
+	}
+
+	public ProformaCab removeProformaCab(ProformaCab proformaCab) {
+		getProformaCabs().remove(proformaCab);
+		proformaCab.setCliente(null);
+
+		return proformaCab;
+	}
+
+}

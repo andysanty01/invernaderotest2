@@ -1,0 +1,82 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+
+/**
+ * The persistent class for the proforma_detalle database table.
+ * 
+ */
+@Entity
+@Table(name="proforma_detalle")
+@NamedQuery(name="ProformaDetalle.findAll", query="SELECT p FROM ProformaDetalle p")
+public class ProformaDetalle implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="profor_det_id", unique=true, nullable=false)
+	private Integer proforDetId;
+
+	@Column(name="profor_det_cantidad_pro")
+	private Integer proforDetCantidadPro;
+
+	@Column(name="profor_det_subtotal", nullable=false, precision=7, scale=2)
+	private BigDecimal proforDetSubtotal;
+
+	//bi-directional many-to-one association to Producto
+	@ManyToOne
+	@JoinColumn(name="pro_id")
+	private Producto producto;
+
+	//bi-directional many-to-one association to ProformaCab
+	@ManyToOne
+	@JoinColumn(name="profor_cab_id")
+	private ProformaCab proformaCab;
+
+	public ProformaDetalle() {
+	}
+
+	public Integer getProforDetId() {
+		return this.proforDetId;
+	}
+
+	public void setProforDetId(Integer proforDetId) {
+		this.proforDetId = proforDetId;
+	}
+
+	public Integer getProforDetCantidadPro() {
+		return this.proforDetCantidadPro;
+	}
+
+	public void setProforDetCantidadPro(Integer proforDetCantidadPro) {
+		this.proforDetCantidadPro = proforDetCantidadPro;
+	}
+
+	public BigDecimal getProforDetSubtotal() {
+		return this.proforDetSubtotal;
+	}
+
+	public void setProforDetSubtotal(BigDecimal proforDetSubtotal) {
+		this.proforDetSubtotal = proforDetSubtotal;
+	}
+
+	public Producto getProducto() {
+		return this.producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	public ProformaCab getProformaCab() {
+		return this.proformaCab;
+	}
+
+	public void setProformaCab(ProformaCab proformaCab) {
+		this.proformaCab = proformaCab;
+	}
+
+}

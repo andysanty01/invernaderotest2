@@ -1,0 +1,119 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+
+/**
+ * The persistent class for the alquiler_cab database table.
+ * 
+ */
+@Entity
+@Table(name="alquiler_cab")
+@NamedQuery(name="AlquilerCab.findAll", query="SELECT a FROM AlquilerCab a")
+public class AlquilerCab implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_alquiler_cab", unique=true, nullable=false)
+	private Integer idAlquilerCab;
+
+	@Column(length=50)
+	private String descripcion;
+
+	private Boolean estado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(nullable=false)
+	private Date fecha;
+
+	@Column(name="valor_total", nullable=false, precision=7, scale=2)
+	private BigDecimal valorTotal;
+
+	//bi-directional many-to-one association to Clienteal
+	@ManyToOne
+	@JoinColumn(name="cedula_clienteal", nullable=false)
+	private Clienteal clienteal;
+
+	//bi-directional many-to-one association to AlquilerDet
+	@OneToMany(mappedBy="alquilerCab")
+	private List<AlquilerDet> alquilerDets;
+
+	public AlquilerCab() {
+	}
+
+	public Integer getIdAlquilerCab() {
+		return this.idAlquilerCab;
+	}
+
+	public void setIdAlquilerCab(Integer idAlquilerCab) {
+		this.idAlquilerCab = idAlquilerCab;
+	}
+
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Boolean getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+
+	public Date getFecha() {
+		return this.fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public BigDecimal getValorTotal() {
+		return this.valorTotal;
+	}
+
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public Clienteal getClienteal() {
+		return this.clienteal;
+	}
+
+	public void setClienteal(Clienteal clienteal) {
+		this.clienteal = clienteal;
+	}
+
+	public List<AlquilerDet> getAlquilerDets() {
+		return this.alquilerDets;
+	}
+
+	public void setAlquilerDets(List<AlquilerDet> alquilerDets) {
+		this.alquilerDets = alquilerDets;
+	}
+
+	public AlquilerDet addAlquilerDet(AlquilerDet alquilerDet) {
+		getAlquilerDets().add(alquilerDet);
+		alquilerDet.setAlquilerCab(this);
+
+		return alquilerDet;
+	}
+
+	public AlquilerDet removeAlquilerDet(AlquilerDet alquilerDet) {
+		getAlquilerDets().remove(alquilerDet);
+		alquilerDet.setAlquilerCab(null);
+
+		return alquilerDet;
+	}
+
+}

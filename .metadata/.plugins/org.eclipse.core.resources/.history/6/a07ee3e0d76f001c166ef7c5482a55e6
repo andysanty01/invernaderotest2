@@ -1,0 +1,83 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
+
+
+/**
+ * The persistent class for the productoal database table.
+ * 
+ */
+@Entity
+@Table(name="productoal")
+@NamedQuery(name="Productoal.findAll", query="SELECT p FROM Productoal p")
+public class Productoal implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_productoal", unique=true, nullable=false)
+	private Integer idProductoal;
+
+	@Column(name="costo_dia", nullable=false, precision=7, scale=2)
+	private BigDecimal costoDia;
+
+	@Column(length=50)
+	private String descripcion;
+
+	//bi-directional many-to-one association to AlquilerDet
+	@OneToMany(mappedBy="productoal")
+	private List<AlquilerDet> alquilerDets;
+
+	public Productoal() {
+	}
+
+	public Integer getIdProductoal() {
+		return this.idProductoal;
+	}
+
+	public void setIdProductoal(Integer idProductoal) {
+		this.idProductoal = idProductoal;
+	}
+
+	public BigDecimal getCostoDia() {
+		return this.costoDia;
+	}
+
+	public void setCostoDia(BigDecimal costoDia) {
+		this.costoDia = costoDia;
+	}
+
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public List<AlquilerDet> getAlquilerDets() {
+		return this.alquilerDets;
+	}
+
+	public void setAlquilerDets(List<AlquilerDet> alquilerDets) {
+		this.alquilerDets = alquilerDets;
+	}
+
+	public AlquilerDet addAlquilerDet(AlquilerDet alquilerDet) {
+		getAlquilerDets().add(alquilerDet);
+		alquilerDet.setProductoal(this);
+
+		return alquilerDet;
+	}
+
+	public AlquilerDet removeAlquilerDet(AlquilerDet alquilerDet) {
+		getAlquilerDets().remove(alquilerDet);
+		alquilerDet.setProductoal(null);
+
+		return alquilerDet;
+	}
+
+}

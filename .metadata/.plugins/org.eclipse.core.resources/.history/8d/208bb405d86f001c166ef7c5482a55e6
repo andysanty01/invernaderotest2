@@ -1,0 +1,115 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+
+
+/**
+ * The persistent class for the pedidos database table.
+ * 
+ */
+@Entity
+@Table(name="pedidos")
+@NamedQuery(name="Pedido.findAll", query="SELECT p FROM Pedido p")
+public class Pedido implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ped_id", unique=true, nullable=false)
+	private Integer pedId;
+
+	@Column(name="ped_abono")
+	private Boolean pedAbono;
+
+	@Column(name="ped_avance", nullable=false)
+	private Integer pedAvance;
+
+	@Column(name="ped_detalle", length=50)
+	private String pedDetalle;
+
+	@Column(name="ped_estado", length=20)
+	private String pedEstado;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="ped_fecha_fin")
+	private Date pedFechaFin;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="ped_fecha_inicio")
+	private Date pedFechaInicio;
+
+	//bi-directional many-to-one association to ProformaCab
+	@ManyToOne
+	@JoinColumn(name="profor_cab_id")
+	private ProformaCab proformaCab;
+
+	public Pedido() {
+	}
+
+	public Integer getPedId() {
+		return this.pedId;
+	}
+
+	public void setPedId(Integer pedId) {
+		this.pedId = pedId;
+	}
+
+	public Boolean getPedAbono() {
+		return this.pedAbono;
+	}
+
+	public void setPedAbono(Boolean pedAbono) {
+		this.pedAbono = pedAbono;
+	}
+
+	public Integer getPedAvance() {
+		return this.pedAvance;
+	}
+
+	public void setPedAvance(Integer pedAvance) {
+		this.pedAvance = pedAvance;
+	}
+
+	public String getPedDetalle() {
+		return this.pedDetalle;
+	}
+
+	public void setPedDetalle(String pedDetalle) {
+		this.pedDetalle = pedDetalle;
+	}
+
+	public String getPedEstado() {
+		return this.pedEstado;
+	}
+
+	public void setPedEstado(String pedEstado) {
+		this.pedEstado = pedEstado;
+	}
+
+	public Date getPedFechaFin() {
+		return this.pedFechaFin;
+	}
+
+	public void setPedFechaFin(Date pedFechaFin) {
+		this.pedFechaFin = pedFechaFin;
+	}
+
+	public Date getPedFechaInicio() {
+		return this.pedFechaInicio;
+	}
+
+	public void setPedFechaInicio(Date pedFechaInicio) {
+		this.pedFechaInicio = pedFechaInicio;
+	}
+
+	public ProformaCab getProformaCab() {
+		return this.proformaCab;
+	}
+
+	public void setProformaCab(ProformaCab proformaCab) {
+		this.proformaCab = proformaCab;
+	}
+
+}

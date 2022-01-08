@@ -1,0 +1,93 @@
+package minimarketdemo.model.core.entities;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the clienteal database table.
+ * 
+ */
+@Entity
+@Table(name="clienteal")
+@NamedQuery(name="Clienteal.findAll", query="SELECT c FROM Clienteal c")
+public class Clienteal implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="cedula_clienteal", unique=true, nullable=false, length=10)
+	private String cedulaClienteal;
+
+	@Column(nullable=false, length=100)
+	private String direccion;
+
+	@Column(nullable=false, length=50)
+	private String nombres;
+
+	@Column(nullable=false, length=15)
+	private String telefono;
+
+	//bi-directional many-to-one association to AlquilerCab
+	@OneToMany(mappedBy="clienteal")
+	private List<AlquilerCab> alquilerCabs;
+
+	public Clienteal() {
+	}
+
+	public String getCedulaClienteal() {
+		return this.cedulaClienteal;
+	}
+
+	public void setCedulaClienteal(String cedulaClienteal) {
+		this.cedulaClienteal = cedulaClienteal;
+	}
+
+	public String getDireccion() {
+		return this.direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getNombres() {
+		return this.nombres;
+	}
+
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+
+	public String getTelefono() {
+		return this.telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public List<AlquilerCab> getAlquilerCabs() {
+		return this.alquilerCabs;
+	}
+
+	public void setAlquilerCabs(List<AlquilerCab> alquilerCabs) {
+		this.alquilerCabs = alquilerCabs;
+	}
+
+	public AlquilerCab addAlquilerCab(AlquilerCab alquilerCab) {
+		getAlquilerCabs().add(alquilerCab);
+		alquilerCab.setClienteal(this);
+
+		return alquilerCab;
+	}
+
+	public AlquilerCab removeAlquilerCab(AlquilerCab alquilerCab) {
+		getAlquilerCabs().remove(alquilerCab);
+		alquilerCab.setClienteal(null);
+
+		return alquilerCab;
+	}
+
+}
